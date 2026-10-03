@@ -2,6 +2,11 @@
 
 A lightweight project management canvas app built with **Microsoft Power Apps** to replace manual spreadsheet tracking. It provides project managers and team members with instant visibility into active projects, associated tasks, assigned ownership, and real-time completion progress.
 
+
+
+<video src="https://github.com/user-attachments/assets/b4d143ea-69fc-4158-bfeb-c01ca97a9905" controls width="100%"></video>
+
+
 ---
 
 ## 🖥️️ Core App Structure
