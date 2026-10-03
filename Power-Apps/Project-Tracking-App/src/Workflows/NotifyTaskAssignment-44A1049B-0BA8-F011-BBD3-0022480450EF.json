@@ -1,0 +1,165 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "app_sharedsharepointonline_a5654"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_office365": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "app_sharedoffice365_f4619"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "undefined",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "description": "Please enter your input",
+                  "title": "TaskTitle",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                },
+                "number": {
+                  "description": "Please enter a number",
+                  "title": "ProjectID",
+                  "type": "number",
+                  "x-ms-content-hint": "NUMBER",
+                  "x-ms-dynamically-added": true
+                },
+                "text_1": {
+                  "description": "Please enter your input",
+                  "title": "Project",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                },
+                "text_2": {
+                  "description": "Please enter your input",
+                  "title": "Description",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                },
+                "text_3": {
+                  "description": "Please enter your input",
+                  "title": "StartDate",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                },
+                "text_4": {
+                  "description": "Please enter your input",
+                  "title": "DueDate",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                },
+                "text_5": {
+                  "description": "Please enter your input",
+                  "title": "Priority",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                },
+                "text_6": {
+                  "description": "Please enter your input",
+                  "title": "AssignedToEmail",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                }
+              },
+              "required": [
+                "text",
+                "number",
+                "text_1",
+                "text_2",
+                "text_3",
+                "text_4",
+                "text_5",
+                "text_6"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Create_item": {
+          "runAfter": {},
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "dataset": "https://3b8dn2.sharepoint.com/sites/ProjectTrackingSite",
+              "table": "f0a424ab-36ff-444b-a856-4ac5d36b24ce",
+              "item/Title": "@triggerBody()?['text']",
+              "item/Description": "@triggerBody()?['text_2']",
+              "item/StartDate": "@triggerBody()?['text_3']",
+              "item/DueDate": "@triggerBody()?['text_4']",
+              "item/Status/Value": "To Do",
+              "item/Priority/Value": "@triggerBody()?['text_5']",
+              "item/AssignedTo/Claims": "@triggerBody()?['text_6']",
+              "item/Project/Id": "@triggerBody()?['number']"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "operationId": "PostItem",
+              "connectionName": "shared_sharepointonline"
+            }
+          }
+        },
+        "Send_an_email_(V2)": {
+          "runAfter": {
+            "Create_item": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "emailMessage/To": "@triggerBody()?['text_7']",
+              "emailMessage/Subject": "New Task Assigned: @{triggerBody()?['text']}\n",
+              "emailMessage/Body": "<p class=\"editor-paragraph\">Hello ,@{triggerBody()?['text_7']}<br><br>You have been assigned a new task:<br><b><strong class=\"editor-text-bold\">Task:</strong></b> @{triggerBody()?['text']}<br><b><strong class=\"editor-text-bold\">Project:</strong></b>@{triggerBody()?['text_1']}<br><b><strong class=\"editor-text-bold\">Status:</strong></b> @{triggerBody()?['text_5']}<br><b><strong class=\"editor-text-bold\">Priority:</strong></b> @{triggerBody()?['text_6']}<br><br><b><strong class=\"editor-text-bold\">Start Date:</strong></b> @{triggerBody()?['text_3']} <br><b><strong class=\"editor-text-bold\">Due Date:</strong></b> @{triggerBody()?['text_4']} <br><br><br>Please check the Project Tracking App for details.</p><br>",
+              "emailMessage/Importance": "Normal"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+              "operationId": "SendEmailV2",
+              "connectionName": "shared_office365"
+            }
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

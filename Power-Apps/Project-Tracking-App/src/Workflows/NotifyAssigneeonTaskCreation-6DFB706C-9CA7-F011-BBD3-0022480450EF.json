@@ -1,0 +1,123 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_office365": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "app_sharedoffice365_f4619"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      },
+      "shared_sharepointonline-1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "app_sharedsharepointonline_e84a4"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "app_sharedsharepointonline_a5654"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_an_item_is_created": {
+          "recurrence": {
+            "interval": 1,
+            "frequency": "Minute"
+          },
+          "splitOn": "@triggerOutputs()?['body/value']",
+          "metadata": {
+            "operationMetadataId": "e1e726bd-082f-4b47-9939-928d321b10a9"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetOnNewItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "https://3b8dn2.sharepoint.com/sites/ProjectTrackingSite",
+              "table": "f0a424ab-36ff-444b-a856-4ac5d36b24ce"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Send_an_email_(V2)": {
+          "runAfter": {
+            "Update_item": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d451f77a-d879-4e1a-b550-08d4d2ca996e"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_office365",
+              "operationId": "SendEmailV2",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+            },
+            "parameters": {
+              "emailMessage/To": "@triggerBody()?['AssignedTo/Email']",
+              "emailMessage/Subject": "New Task Assigned:@{triggerBody()?['Title']}\n",
+              "emailMessage/Body": "\n\n  \n    <meta>\n    <title>New Task Assigned</title>\n  \n  \n    <p>Hello ,@{triggerBody()?['AssignedTo/DisplayName']}</p>\n\n    <p>You have been assigned a new task.</p>\n\n    <table cellpadding=\"6\" cellspacing=\"0\" style=\"border-collapse: collapse; width:100%; max-width:600px;\">\n      <tbody><tr>\n        <td style=\"font-weight:700; width:130px; vertical-align:top;\">Task:</td>\n        <td>@{triggerBody()?['Title']}</td>\n      </tr>\n      <tr>\n        <td style=\"font-weight:700; vertical-align:top;\">Description:</td>\n        <td>@{triggerOutputs()?['body/Description']}</td>\n      </tr>\n      <tr style=\"background:#f7f7f7;\">\n        <td style=\"font-weight:700; vertical-align:top;\">Start Date:</td>\n        <td>@{triggerOutputs()?['body/StartDate']}</td>\n      </tr>\n      <tr>\n        <td style=\"font-weight:700; vertical-align:top;\">Due Date:</td>\n        <td>@{triggerOutputs()?['body/DueDate']}</td>\n      </tr>\n      <tr style=\"background:#f7f7f7;\">\n        <td style=\"font-weight:700; vertical-align:top;\">Priority:</td>\n        <td>@{triggerOutputs()?['body/Priority/Value']}</td>\n      </tr>\n    </tbody></table>\n\n    <p style=\"margin-top:18px;\">Please check the Project Tracking App for more details.</p>\n\n    <p>Regards,<br>Project Tracking App</p>\n  \n\n",
+              "emailMessage/Importance": "Normal"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Update_item": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "7b5bf8fe-4507-498d-ad4a-dca2460b1da4"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "dataset": "https://3b8dn2.sharepoint.com/sites/ProjectTrackingSite",
+              "table": "f0a424ab-36ff-444b-a856-4ac5d36b24ce",
+              "id": "@triggerBody()?['ID']",
+              "item/Status/Value": "To Do"
+            },
+            "host": {
+              "connectionName": "shared_sharepointonline-1",
+              "operationId": "PatchItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

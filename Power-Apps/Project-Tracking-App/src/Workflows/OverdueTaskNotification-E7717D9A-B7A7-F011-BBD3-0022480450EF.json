@@ -1,0 +1,119 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "app_sharedsharepointonline_a5654"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_office365": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "app_sharedoffice365_f4619"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "undefined",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "Recurrence": {
+          "recurrence": {
+            "frequency": "Day",
+            "interval": "1",
+            "startTime": "2025-10-13T07:00:00Z"
+          },
+          "type": "Recurrence"
+        }
+      },
+      "actions": {
+        "Get_items": {
+          "runAfter": {},
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "dataset": "https://3b8dn2.sharepoint.com/sites/ProjectTrackingSite",
+              "table": "f0a424ab-36ff-444b-a856-4ac5d36b24ce",
+              "$filter": "DueDate lt '@{utcNow()}' and Status ne 'Completed'\n"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItems"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Apply_to_each": {
+          "foreach": "@outputs('Get_items')?['body/value']",
+          "actions": {
+            "Notify_Assignee_a_Task_is_Overdue": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "emailMessage/To": "Mfiromsa@3b8dn2.onmicrosoft.com",
+                  "emailMessage/Subject": "Overdue Task Alert: @{items('Apply_to_each')?['Title']}\n",
+                  "emailMessage/Body": "Hello ,@{items('Apply_to_each')?['AssignedTo/DisplayName']}<br><br>The following task is overdue:<br><br><strong>Task:</strong> @{items('Apply_to_each')?['Title']}<br><br><strong>Project:</strong> @{items('Apply_to_each')?['Project/Value']}<br><br><strong>Status:</strong> @{items('Apply_to_each')?['Status/Value']}<br><br><strong>Priority:</strong> @{items('Apply_to_each')?['Priority/Value']}<br><br><strong>Due Date:</strong> @{items('Apply_to_each')?['DueDate']}<br><br><br><br>Please take action immediately.<br>",
+                  "emailMessage/Importance": "Normal"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                  "connectionName": "shared_office365",
+                  "operationId": "SendEmailV2"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Notify_Manager_about_overdue_tasks": {
+              "runAfter": {
+                "Notify_Assignee_a_Task_is_Overdue": [
+                  "Succeeded"
+                ]
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "emailMessage/To": "Mfiromsa@3b8dn2.onmicrosoft.com",
+                  "emailMessage/Subject": "Overdue Task Notification: @{items('Apply_to_each')?['Title']}\n",
+                  "emailMessage/Body": "Hello Manager,<br><br><br>The following task assigned to: @{items('Apply_to_each')?['AssignedTo/DisplayName']} is overdue:<br><br><strong>Task:</strong> @{items('Apply_to_each')?['Title']}<br><br><strong>Project:</strong> @{items('Apply_to_each')?['Project/Value']}<br><br><strong>Status:</strong> @{items('Apply_to_each')?['Status/Value']}<br><br><strong>Priority:</strong> @{items('Apply_to_each')?['Priority/Value']}<br><br><strong>Due Date:</strong> @{items('Apply_to_each')?['DueDate']}<br><br><br><br>Please follow up with the employee.<br>",
+                  "emailMessage/Importance": "Normal"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                  "connectionName": "shared_office365",
+                  "operationId": "SendEmailV2"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_items": [
+              "Succeeded"
+            ]
+          },
+          "type": "Foreach"
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

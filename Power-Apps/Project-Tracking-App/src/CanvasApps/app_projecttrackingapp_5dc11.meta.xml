@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CanvasApp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>app_projecttrackingapp_5dc11</Name>
+  <AppVersion>2025-12-05T15:11:20Z</AppVersion>
+  <Status>Ready</Status>
+  <CreatedByClientVersion>3.25094.12.0</CreatedByClientVersion>
+  <MinClientVersion>3.25094.12.0</MinClientVersion>
+  <Tags>{"primaryDeviceWidth":"200","primaryDeviceHeight":"768","supportsPortrait":"true","supportsLandscape":"true","primaryFormFactor":"Tablet","showStatusBar":"false","publisherVersion":"3.25094.12","minimumRequiredApiVersion":"2.2.0","hasComponent":"true","hasUnlockedComponent":"true","isUnifiedRootApp":"false"}</Tags>
+  <IsCdsUpgraded>0</IsCdsUpgraded>
+  <GalleryItemId xsi:nil="true"></GalleryItemId>
+  <BackgroundColor>RGBA(0,176,240,1)</BackgroundColor>
+  <DisplayName>Project Tracking App</DisplayName>
+  <Description></Description>
+  <CommitMessage></CommitMessage>
+  <Publisher></Publisher>
+  <AuthorizationReferences>[]</AuthorizationReferences>
+  <ConnectionReferences>{"5a8af7cc-c539-4ce7-beaf-8ebba9f64c09":{"id":"/providers/microsoft.powerapps/apis/shared_sharepointonline","displayName":"SharePoint","iconUri":"https://conn-afd-prod-endpoint-bmc9bqahasf3grgk.b01.azurefd.net/v1.0.1769/1.0.1769.4352/sharepointonline/icon.png","dataSources":["Projects","Tasks"],"dependencies":[],"dependents":[],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{"https://3b8dn2.sharepoint.com/sites/ProjectTrackingSite":{"dataSources":{"Projects":{"tableName":"f9ef5baf-22b5-46b9-8726-5caa96db83f5"},"Tasks":{"tableName":"f0a424ab-36ff-444b-a856-4ac5d36b24ce"}}}},"apiTier":"Standard"},"0ae70c62-6e93-45d4-99c9-4ffcc9d20c6c":{"id":"/providers/microsoft.powerapps/apis/shared_office365users","displayName":"Office 365 Users","iconUri":"https://conn-afd-prod-endpoint-bmc9bqahasf3grgk.b01.azurefd.net/releases/v1.0.1777/1.0.1777.4410/office365users/icon.png","dataSources":["Office365Users"],"dependencies":[],"dependents":[],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{},"apiTier":"Standard","actions":["UserProfile_V2"]}}</ConnectionReferences>
+  <DatabaseReferences>{}</DatabaseReferences>
+  <AppComponents>[]</AppComponents>
+  <AppComponentDependencies>[]</AppComponentDependencies>
+  <CanConsumeAppPass>1</CanConsumeAppPass>
+  <CanvasAppType>0</CanvasAppType>
+  <BypassConsent>0</BypassConsent>
+  <EmbeddedApp xsi:nil="true"></EmbeddedApp>
+  <IntroducedVersion>1.0</IntroducedVersion>
+  <CdsDependencies>{"cdsdependencies":[]}</CdsDependencies>
+  <IsCustomizable>1</IsCustomizable>
+  <BackgroundImageUri>/CanvasApps/app_projecttrackingapp_5dc11_BackgroundImageUri</BackgroundImageUri>
+  <DocumentUri>/CanvasApps/app_projecttrackingapp_5dc11_DocumentUri.msapp</DocumentUri>
+  <AdditionalUris>
+    <AdditionalUri>/CanvasApps/app_projecttrackingapp_5dc11_AdditionalUris0_identity.json</AdditionalUri>
+  </AdditionalUris>
+</CanvasApp>
