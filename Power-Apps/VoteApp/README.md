@@ -27,6 +27,19 @@ Administrators gain full control over the feedback pipeline—monitoring key per
 
 ---
 
+
+
+## 🎬 App Walkthrough & Demo
+
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/14169f2c-4b19-42f9-87be-5e9e890a962e" controls="controls" muted="muted" style="max-width: 100%;">
+  </video>
+</div>
+
+> 💡 *Watch the demo above to see the user voting interface, real-time comment threads, and the admin management dashboard in action.*
+
+
+
 ## Key Features
 
 ### User Experience
