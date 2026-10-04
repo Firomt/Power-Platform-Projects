@@ -1,10 +1,12 @@
 # 📊 Project Tracking App
 
-A lightweight project management canvas app built with **Microsoft Power Apps** to replace manual spreadsheet tracking. It provides project managers and team members with instant visibility into active projects, associated tasks, assigned ownership, and real-time completion progress.
+A lightweight Responsive project management canvas app built with **Microsoft Power Apps** and **Dataverse** to replace manual spreadsheet tracking. It provides project managers and team members with instant visibility into active projects, associated tasks, assigned ownership, and real-time completion progress.
 
 
+<video src="https://github.com/user-attachments/assets/f181f4c4-304f-43c6-ab80-0e819a0141c5
+" controls width="100%"></video>
 
-<video src="https://github.com/user-attachments/assets/b4d143ea-69fc-4158-bfeb-c01ca97a9905" controls width="100%"></video>
+
 
 
 ---
