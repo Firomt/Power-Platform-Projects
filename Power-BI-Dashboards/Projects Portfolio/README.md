@@ -160,20 +160,6 @@ These are stored in Dataverse and used as dynamic links on the Project Details p
 * Power Platform integration
 * Dashboard UI/UX design
 
-## Project Structure
-
-```text
-Power-Platform-Project-Portfolio/
-│
-├── README.md
-├── PowerBI/
-│   └── ProjectPortfolio.pbix
-│
-└── images/
-    ├── project-portfolio-overview.png
-    ├── project-explorer.png
-    └── project-details.png
-```
 
 ## Key Skills Demonstrated
 
