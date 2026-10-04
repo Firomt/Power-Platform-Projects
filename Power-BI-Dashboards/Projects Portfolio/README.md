@@ -4,6 +4,8 @@ A **Power Platform projects portfolio management and analytics solution** built 
 
 The solution allows project information to be managed in Dataverse and analyzed through an interactive Power BI report.
 
+![Portfolio Overview](/Power-Platform-Projects/Power-BI-Dashboards/Projects%20Portfolio/images/page1.png)
+
 ## Tech Stack
 
 * **Microsoft Dataverse** - Project data storage
@@ -66,7 +68,7 @@ Provides a high-level view of the project portfolio, including:
 * Projects Over Time
 * Common Data Sources
 
-![Portfolio Overview](images/project-portfolio-overview.png)
+![Portfolio Overview](/Power-Platform-Projects/Power-BI-Dashboards/Projects%20Portfolio/images/page1.png)
 
 ---
 
@@ -74,7 +76,7 @@ Provides a high-level view of the project portfolio, including:
 
 Allows users to explore and filter individual projects before opening the detailed project view.
 
-![Project Explorer](images/project-explorer.png)
+![Project Explorer](/Power-Platform-Projects/Power-BI-Dashboards/Projects%20Portfolio/images/page2.png)
 
 ---
 
@@ -96,7 +98,7 @@ Includes:
 * GitHub repository
 * Live demo
 
-![Project Details](images/project-details.png)
+![Project Details](/Power-Platform-Projects/Power-BI-Dashboards/Projects%20Portfolio/images/page3.png)
 
 ## Data Model
 
